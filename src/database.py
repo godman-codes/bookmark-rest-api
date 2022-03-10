@@ -15,7 +15,7 @@ class User(db.Model):
    bookmarks = db.relationship('Bookmarks', backref='user')
 
    def __repr__(self) -> str:
-       return 'User>>> {self.username}'
+      return 'User>>> {self.username}'
 
 class Bookmarks(db.Model):
    id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +29,7 @@ class Bookmarks(db.Model):
 
    def generate_short_character(self):
       characters = string.digits+string.ascii_letters
-      picked_chars = random.choices(characters, k=3)
+      picked_chars = ''.join(random.choices(characters, k=3))
 
       link=self.query.filter_by(short_url=picked_chars).first()
 
@@ -38,10 +38,10 @@ class Bookmarks(db.Model):
       else:
          return picked_chars
 
-   def __init__(self) -> None:
-       super().__init__()
+   def __init__(self, **kwargs):
+      super().__init__(**kwargs)
 
-       self.short_url = self.generate_short_character()
+      self.short_url = self.generate_short_character()
 
    def __repr__(self) -> str:
-       return 'Bookmarks>>> {self.url}'
+      return 'Bookmarks>>> {self.url}'

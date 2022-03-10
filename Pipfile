@@ -8,6 +8,7 @@ flask = "*"
 flask-sqlalchemy = "*"
 validators = "*"
 flask-jwt-extended = "*"
+python-dotenv = "*"
 
 [dev-packages]
 black = "*"
