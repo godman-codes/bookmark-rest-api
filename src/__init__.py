@@ -1,7 +1,8 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect
 from src.auth import auth
 from src.bookmarks import bookmarks
-from src.database import db
+from src.constants.http_status_codes import HTTP_404_NOT_FOUND
+from src.database import db, Bookmarks
 from flask_jwt_extended import JWTManager
 import os
 from dotenv import load_dotenv
@@ -17,5 +18,17 @@ db.app = app
 db.init_app(app)
 app.register_blueprint(auth)
 app.register_blueprint(bookmarks)
+@app.get('/<short_url>')
+def redirect_to_url(short_url):
+  bookmark = Bookmarks.query.filter_by(short_url=short_url).first_or_404()
 
+  if bookmark:
+    bookmark.visits = bookmark.visits + 1
+    db.session.commit()
+
+    return redirect(bookmark.url)
+
+@app.errorhandler(HTTP_404_NOT_FOUND)
+def handle_404(e):
+  return jsonify({'error': 'Not found'}), HTTP_404_NOT_FOUND
 
