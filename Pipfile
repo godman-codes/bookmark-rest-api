@@ -10,6 +10,8 @@ validators = "*"
 flask-jwt-extended = "*"
 python-dotenv = "*"
 flasgger = "*"
+gunicorn = "*"
+waitress = "*"
 
 [dev-packages]
 black = "*"
